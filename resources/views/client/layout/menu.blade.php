@@ -54,6 +54,8 @@
                     @endif
                   </li>
                 @endforeach
+                
+                
               </ul>
             </div>
           </div>
@@ -62,6 +64,38 @@
     @endforeach
     </ul>
       
+    
+
+    <ul class="nav">
+      <li class="mega-dropdown has-sub">
+        <a href="#" class="dropdown-toggle">
+        برندها
+          <span class="caret"></span>
+        </a>
+    
+        <div class="wrap-popup column1">
+          <div class="popup">
+            <ul class="nav">
+              
+              @foreach ($brands as $brand)
+              <li class="dropdown-submenu has-sub">
+                <a href="#">
+                  {{-- اینجا داریم دو چیز را به هم وصل می‌کنیم: 'storage/' مقدار $brand->image
+              اگر مقدار $brand->image این باشد:image/nike.png ترکیبشان می‌شود: storage/image/nike.png --}}
+                  <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name }}" title="{{ $brand->name }}" style="width:70px; height:30px; margin-right:5px;">
+                  {{ $brand->name }}
+                  <span class="caret-right">&rsaquo;</span>
+                </a>
+               
+              @endforeach
+    
+              
+            </ul>
+          </div>
+        </div>
+      </li>
+    </ul>
+    
     
      
         <div class="wrap-popup column1">
@@ -82,3 +116,4 @@
 </div>
 </div>
 </div>
+
