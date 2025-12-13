@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ Route::prefix('/adminpanel')->group(function(){
     
     // به جای اینکه تمام مسیر روت ها تک به تک بنویسیم با این یک کد همه مسیر روت های کتگوری خودش ایجاد میکند
     Route::resource('categories', CategoryController::class);
+    Route::resource('brands', BrandController::class);
 
   
 });
