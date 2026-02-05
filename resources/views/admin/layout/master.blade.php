@@ -200,15 +200,10 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item">
-              <a href="/admin/pages/widgets.html" class="nav-link">
-                <i class="nav-icon fa fa-th"></i>
-                <p>
-                  ویجت‌ها
-                  <span class="right badge badge-danger">جدید</span>
-                </p>
-              </a>
-            </li>
+               
+            
+
+
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-pie-chart"></i>
@@ -231,10 +226,17 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a href="{{ route('featuredCategory.create') }}" class="nav-link">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>انتخاب دسته بندی ویژه</p>
+                  </a>
+                </li>
+                <li class="nav-item">
                   
                 </li>
               </ul>
             </li>
+
 
 
             <li class="nav-item has-treeview">
@@ -265,132 +267,230 @@
             </li>
 
 
+
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-tree"></i>
+                <i class="nav-icon fa fa-pie-chart"></i>
                 <p>
-                  اشیای گرافیکی
-                  <i class="fa fa-angle-left right"></i>
+                  گروه مشخصات
+                  <i class="right fa fa-angle-left"></i>
                 </p>
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="/admin/pages/UI/general.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>عمومی</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/pages/UI/icons.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>آیکون‌ها</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/pages/UI/buttons.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>دکمه‌ها</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/pages/UI/sliders.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>اسلایدر‌ها</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-edit"></i>
-                <p>
-                  فرم‌ها
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="/admin/pages/forms/general.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>اجزا عمومی</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/pages/forms/advanced.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>پیشرفته</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/pages/forms/editors.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>ویشرایشگر</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-table"></i>
-                <p>
-                  جداول
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="/admin/pages/tables/simple.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>جداول ساده</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/pages/tables/data.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>جداول داده</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-header">مثال‌ها</li>
-            <li class="nav-item">
-              <a href="/admin/pages/calendar.html" class="nav-link">
-                <i class="nav-icon fa fa-calendar"></i>
-                <p>
-                  تقویم
-                  <span class="badge badge-info right">2</span>
-                </p>
-              </a>
-            </li>
-            <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-envelope-o"></i>
-                <p>
-                  ایمیل‌ باکس
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="/admin/pages/mailbox/mailbox.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>اینباکس</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/pages/mailbox/compose.html" class="nav-link">
+                  <a href="{{ route('propertyGroups.create') }}" class="nav-link">
                     <i class="fa fa-circle-o nav-icon"></i>
                     <p>ایجاد</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="/admin/pages/mailbox/read-mail.html" class="nav-link">
+                  <a href="{{ route('propertyGroups.index') }}" class="nav-link">
                     <i class="fa fa-circle-o nav-icon"></i>
-                    <p>خواندن</p>
+                    <p>لیست</p>
                   </a>
+                </li>
+            <li class="nav-item">
+              
+            </li>
+          </ul>
+        </li>
+
+
+
+
+
+
+
+
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-pie-chart"></i>
+            <p>
+               مشخصات
+              <i class="right fa fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('properties.create') }}" class="nav-link">
+                <i class="fa fa-circle-o nav-icon"></i>
+                <p>ایجاد</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('properties.index') }}" class="nav-link">
+                <i class="fa fa-circle-o nav-icon"></i>
+                <p>لیست</p>
+              </a>
+            </li>
+        <li class="nav-item">
+          
+        </li>
+      </ul>
+    </li>
+
+
+
+
+
+
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-pie-chart"></i>
+                <p>
+                 محصولات
+                  <i class="right fa fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('products.create') }}" class="nav-link">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>ایجاد</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('products.index') }}" class="nav-link">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>لیست</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  
                 </li>
               </ul>
             </li>
+
+
+
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-pie-chart"></i>
+                <p>
+                 کدهای تخفیف
+                  <i class="right fa fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('offers.create') }}" class="nav-link">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>ایجاد</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('offers.index') }}" class="nav-link">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>لیست</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  
+                </li>
+              </ul>
+            </li>
+
+
+
+
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-pie-chart"></i>
+                <p>
+                 اسلایدر
+                  <i class="right fa fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('sliders.create') }}" class="nav-link">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>ایجاد</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('sliders.index') }}" class="nav-link">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>لیست</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  
+                </li>
+              </ul>
+            </li>
+
+
+
+
+
+
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-pie-chart"></i>
+                <p>
+                  کاربران
+                  <i class="right fa fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                
+                <li class="nav-item">
+                  <a href="{{ route('users.index') }}" class="nav-link">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>لیست</p>
+                  </a>
+                </li>
+            <li class="nav-item">
+              
+            </li>
+          </ul>
+        </li>
+
+
+
+
+
+
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-pie-chart"></i>
+                <p>
+                نقش ها
+                  <i class="right fa fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('roles.create') }}" class="nav-link">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>ایجاد</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('roles.index') }}" class="nav-link">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>لیست</p>
+                  </a>
+                </li>
+            <li class="nav-item">
+              
+            </li>
+          </ul>
+        </li>
+
+
+
+
+
+
+          
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-book"></i>
@@ -432,47 +532,7 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-plus-square-o"></i>
-                <p>
-                  بیشتر
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="/admin/pages/examples/404.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>ارور 404</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/pages/examples/500.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>ارور 500</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/pages/examples/blank.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>صفحه خالی</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/starter.html" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>صفحه شروع</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-header">متفاوت</li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-file"></i>
-                <p>مستندات</p>
-              </a>
+           
             </li>
             <li class="nav-header">برچسب‌ها</li>
             <li class="nav-item">
@@ -524,7 +584,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        
+        @include('admin.layout.notification')
         @yield('content')
 
 

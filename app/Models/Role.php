@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role as SpatieRole;
+
+
+class Role extends Model
+{
+    protected $fillable = [
+        'name',
+        'title',
+        'guard_name',
+    ];
+
+    
+}

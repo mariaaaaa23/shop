@@ -5,24 +5,19 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Slider;
 use Illuminate\Http\Request;
+use App\Models\FeaturedCategory;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('client.home',[
-
-            // دسته‌های اصلی را از جدول categories پیدا می‌کند به ویوی client.home می‌فرستد در ویو شما می‌توانید به صورت:
-            // همه دسته‌هایی را بیاور که ستون category_id آن‌ها null است یعنی دسته‌های اصلی (Parent categories)
-           //  get() تمام نتایج را از دیتابیس بگیر و داخل $categories بریز.
-           
-            'categories'=>Category::query()
-               ->where('category_id', null)
-               ->get(),
-
-            //    برای نمایش برندها
-               'brands'=>Brand::all(),
+        return view('client.home', [
+                        // برای گرفتن کتگوری محصولا ویژه که در مدل featuredcategory رابطشون تعرف شده
+            'featuredCategory'=>FeaturedCategory::getCatgory(),
+            // گرفتن اسلایدر ها از دیتابیس و نمایش آنها
+            'sliders'=>Slider::all()
         ]);
     }
 }

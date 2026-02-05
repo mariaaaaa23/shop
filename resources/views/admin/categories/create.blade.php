@@ -15,7 +15,7 @@
                     {{-- نمایش فرم ایجاد برای انتخاب دسته بندی والد --}}
                     <form action="{{ route('categories.store') }}" method="post">
                         @csrf
-                        <div class="form-grou">
+                        <div class="form-group">
                             <label for="category_id">دسته والد</label>
                             <select name="category_id" id="category_id" class="form-control">
                                 <option value="" disabled selected>دسته والد را انتخاب کنید...</option>
@@ -25,10 +25,28 @@
                             </select>
                         </div>
 
+
+
+                         {{--  چک باکس برای انتخاب ویژگی ها --}}
+                         <div class="form-group">
+                            <label>انتخاب گروه ویژگی ها</label>
+                            <div class="row">
+                                @foreach ($properties as $property)
+                                    <lable class="col-sm-2">
+                                        <input  type="checkbox" name="properties[]" value="{{ $property->id }}">{{ $property->title }}
+                                    </lable>
+                                @endforeach
+                            </div>
+                        </div>
+
+
+
                         <div class="form-group">
                            <label for="title">عنوان</label>
                            <input type="text" class="form-control" name="title" id="title">
                         </div>
+
+                        
 
                         <div class="form-group">
                             <input type="submit" name="submit" id="submit" value="ثبت" class="btn btn-primary">
@@ -38,6 +56,7 @@
 
                 </div>
             </div>
+            @include('admin.layout.errors')
         </div>
     </div>
 

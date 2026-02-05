@@ -37,6 +37,27 @@
                            <input type="text" class="form-control" name="title" id="title" value="{{ $category->title }}">
                         </div>
 
+
+                        {{--  چک باکس برای انتخاب ویژگی ها --}}
+                        <div class="form-group">
+                            <label>انتخاب گروه ویژگی ها</label>
+                            <div class="row">
+                                @foreach ($properties as $property)
+                                    <lable class="col-sm-2">
+                                        <input 
+                                           {{-- اگه برای این دسته بندی ویژگی وجود داشته باشه یا انتخاب شده باشه چک میکنه --}}
+                                          @if ($category->hasPropertyGroup($property))
+                                             checked
+                                          @endif
+                                        type="checkbox" name="properties[]" value="{{ $property->id }}">{{ $property->title }}
+                                    </lable>
+                                @endforeach
+                            </div>
+                        </div>
+
+
+                        
+
                         <div class="form-group">
                             <input type="submit" name="submit" id="submit" value="ثبت" class="btn btn-primary">
                         </div>
@@ -45,6 +66,7 @@
 
                 </div>
             </div>
+            @include('admin.layout.errors')
         </div>
     </div>
 
