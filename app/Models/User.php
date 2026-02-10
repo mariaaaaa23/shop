@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OtpMail;
+use App\Mail\WelcomeMail;
 
 
 
@@ -100,6 +101,8 @@ class User extends Authenticatable
         );
 
         }
+            
+
 
         // اگر این کاربر نقش user ندارد نقش user به او بده  این بخش مربوط به Spatie Permission است
         if (!$user->hasRole('user')) {
@@ -108,11 +111,13 @@ class User extends Authenticatable
 
 
         
+
         // send otp by email to user
         //   Mail::to($user->email)  این ایمیل قراره برای یوزرمون یا کاربرانمون ارسال بشه
         // send(new OtpMail($otp)); کد ایمیل از طریق کلاس  otpmail ارسال میشه
         Mail::to($user->email)->send(new OtpMail($otp));
 
+        
         // خروجی متد یوزر هست
         return $user;
     }

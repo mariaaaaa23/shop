@@ -7,6 +7,8 @@ use App\Models\Cart;
 use App\Models\Order;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
+use App\Mail\PaymentSuccessMail;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -88,9 +90,25 @@ class OrderController extends Controller
         // Authority یه کد یکتایی که درگاه وقتی کاربر میره صفحه پرداخت به سایتمون میده
        $order = Order::query()->where('transaction_id', $request->get('Authority'))->first();
 
+
+       if(!$order){
+        return redirect(route('client.index'))->withErrors(['msg'=>'سفارش پیدا نشد']);
+       }
+
+
        $order->update([
         'payment_status' => $request->get('Status'),
        ]);
+
+
+    //    اگه پرداخت موفق بود ایمیل میاد پرداخت با موفقیت انجام شد
+    if($request->get('Status') === 'ok'){
+        $user = $order->user;
+
+        Mail::to($user->email)->send(new PaymentSuccessMail($user, $order));
+    }
+
+
 
        return redirect(route('client.orders.show', $order));
     }

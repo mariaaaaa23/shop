@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VerifyOtpRequest;
 use App\Mail\OtpMail;
+use App\Mail\WelcomeMail;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
-
+use App\Notifications\WelcomeUser;
 
 
 
@@ -62,6 +63,12 @@ class RegisterController extends Controller
 
         // اما اگه درست باشه کاربر رو لاگین میکنیم
         Auth::login($user);
+
+        // ایمیل خوش امد گویی
+        if(!$user->welcome_sent){
+            Mail::to($user->email)->send(new  WelcomeMail($user));
+            $user->update(['welcome_sent' => true]);
+        }
 
         // کاربر که لاگین شد وارد صفحه اصلی مشه
         return redirect(route('client.index'));
