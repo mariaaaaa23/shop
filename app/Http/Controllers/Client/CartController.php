@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
 
 class CartController extends Controller
 {
@@ -50,4 +51,6 @@ class CartController extends Controller
         'cart' => Cart::getCart()
        ], 200);
     }
+
+
 }

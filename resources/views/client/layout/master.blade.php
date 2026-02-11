@@ -398,7 +398,7 @@
                         <div class="top-cart-contain pull-right">
                           <div class="mini-cart">
                             {{-- {{ \App\Models\Cart::totalItems() }} نمایش تعداد کل محصولات    {{ \App\Models\Cart::totalItems() }} نمایش مبلغ کل محصولات در هدر سایت در سب.د خرید --}}
-                            <div class="basket"><a class="basket-icon" href="#"><i class="fa fa-shopping-basket"></i><span id="total_items">{{ \App\Models\Cart::totalItems() }}</span>  سبدخرید <span id="total_amount"{{ \App\Models\Cart::totalAmount() }}></span></a>
+                            <div class="basket"> <a class="basket-icon" href="#">            <i class="fa fa-shopping-basket"></i>            <span id="total_items">{{ \App\Models\Cart::totalItems() }}</span>              سبد خرید            <span id="total_amount">{{ \App\Models\Cart::totalAmount() }}</span>        </a>
                               <div class="top-cart-content" id="menu-cart">
                                 <div class="block-subtitle">
                                   <div class="top-subtotal"><span id="total_items">0</span> <span id="total_amount" class="price">0</span></div>
@@ -701,25 +701,21 @@
 
 
     // برای حذف از سبد خرید
-    function removeFromCart(productId) 
-  {
- 
+    function removeFromCart(productId) {
     $.ajax({
-      type: "delete",
-      url: "/cart/"+ productId,
-      data: {
-       _token: "{{ csrf_token() }}",
-      
-      },
-      success: function(data){
-        $('#total_items').text(data.total_items);
-        $('#total_amount').text(data.total_amount);
-        $('#cart-row-' + productId).remove();
-      }
-
-    })
-
-  }
+        type: "delete",
+        url: "/cart/" + productId,
+        data: {
+            _token: "{{ csrf_token() }}"
+        },
+        success: function(data){
+            // به cart دسترسی بده
+            $('#total_items').text(data.cart.total_items);
+            $('#total_amount').text(data.cart.total_amount);
+            $('#cart-row-' + productId).remove();
+        }
+    });
+}
 
   
   

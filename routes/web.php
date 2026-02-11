@@ -68,7 +68,7 @@ Route::prefix('')->name('client.')->group(function(){
 
 
     Route::get('/cart', [CartController::class,'index'])->name('cart.index');
-    Route::post('/cart/{product}', [CartController::class,'store'])->name('cart.store');
+    Route::post('/cart/{product}', [CartController::class,'store'])->name('cart.store')->middleware('auth');
     Route::delete('/cart/{product}', [CartController::class,'destroy'])->name('cart.destroy');
 
 
