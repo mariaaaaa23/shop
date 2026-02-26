@@ -5,9 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class ProductPropertyController extends Controller
 {
+
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-productProperty', only: ['index']),
+            new Middleware('permission:create-productProperty', only: ['create', 'store']),
+            new Middleware('permission:edit-productProperty', only: ['edit', 'update']),
+            new Middleware('permission:delete-productProperty', only: ['destroy']),
+        ];
+    }
+
+
     // (Product $product) ورودی از نوع محصول چون برای محصول است
     public function index(Product $product)
     {

@@ -8,9 +8,24 @@ use App\Http\Requests\BrandUpdateRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Http\Requests\NewRoleRequest;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class BrandController extends Controller
 {
+
+    public static function middleware():array
+    {
+        return[
+            new Middleware('permission:read-brand', only: ['index']),
+            new Middleware('permission:create-brand', only: ['create', 'store']),
+            new Middleware('permission:edit-brand', only: ['edit', 'update']),
+            new Middleware('permission:delete-brand', only: ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

@@ -6,9 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PropertyGroupRequest;
 use App\Models\PropertyGroup;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class PropertyGroupController extends Controller
 {
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-PropertyGroup', only: ['index']),
+            new Middleware('permission:create-PropertyGroup', only: ['create', 'store']),
+            new Middleware('permission:edit-PropertyGroup', only: ['edit', 'update']),
+            new Middleware('permission:delete-PropertyGroup', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

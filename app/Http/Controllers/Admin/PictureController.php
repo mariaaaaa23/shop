@@ -9,9 +9,23 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class PictureController extends Controller
 {
+
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-pictur', only: ['index']),
+            new Middleware('permission:create-pictur', only: ['create', 'store']),
+            new Middleware('permission:edit-pictur', only: ['edit', 'update']),
+            new Middleware('permission:delete-pictur', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

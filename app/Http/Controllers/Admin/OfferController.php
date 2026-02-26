@@ -7,9 +7,22 @@ use App\Http\Requests\OfferRequest;
 use App\Http\Requests\OfferUpdateRequest;
 use App\Models\Offer;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class OfferController extends Controller
 {
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-offer', only: ['index']),
+            new Middleware('permission:create-offer', only: ['create', 'store']),
+            new Middleware('permission:edit-offer', only: ['edit', 'update']),
+            new Middleware('permission:delete-offer', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LikeRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 

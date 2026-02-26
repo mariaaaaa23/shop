@@ -7,9 +7,23 @@ use App\Http\Requests\FeacturedCategoryRequest;
 use App\Models\Category;
 use App\Models\FeaturedCategory;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class FeaturedCategoryController extends Controller
 {
+    
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-featuredCategory', only: ['index']),
+            new Middleware('permission:create-featuredCategory', only: ['create', 'store']),
+            new Middleware('permission:edit-featuredCategory', only: ['edit', 'update']),
+            new Middleware('permission:delete-featuredCategory', only: ['destroy']),
+        ];
+    }
+   
     /**
      * Display a listing of the resource.
      */

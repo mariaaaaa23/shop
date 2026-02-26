@@ -46,16 +46,52 @@ class PermissionSeeder extends Seeder
             ['name' => 'delete-picture', 'title' => 'delete-picture', 'lable' => 'حذف گالری'],
 
             // affer permission
-            ['name' => 'read-affer', 'title' => 'read-affer', 'lable' => 'مشاهده کد تخفیف'],
-            ['name' => 'create-affer', 'title' => 'create-affer', 'lable' => 'ایجاد کد تخفیف'],
-            ['name' => 'update-affer', 'title' => 'update-affer', 'lable' => 'ویرایش کد تخفیف'],
-            ['name' => 'delete-affer', 'title' => 'delete-affer', 'lable' => 'حذف کد تخفیف'],
+            ['name' => 'read-offer', 'title' => 'read-offer', 'lable' => 'مشاهده کد تخفیف'],
+            ['name' => 'create-offer', 'title' => 'create-offer', 'lable' => 'ایجاد کد تخفیف'],
+            ['name' => 'update-offer', 'title' => 'update-offer', 'lable' => 'ویرایش کد تخفیف'],
+            ['name' => 'delete-offer', 'title' => 'delete-offer', 'lable' => 'حذف کد تخفیف'],
 
             // roles permission
             ['name' => 'read-role', 'title' => 'read-role', 'lable' => 'مشاهده نقش'],
             ['name' => 'create-role', 'title' => 'create-role', 'lable' => 'ایجاد نقش'],
             ['name' => 'update-role', 'title' => 'update-role', 'lable' => 'ویرایش نقش'],
             ['name' => 'delete-role', 'title' => 'delete-role', 'lable' => 'حذف نقش'],
+
+            // comment permission
+            ['name' => 'read-comment', 'title' => 'read-comment', 'lable' => 'مشاهده کامنت '],
+            ['name' => 'create-comment', 'title' => 'create-comment', 'lable' => 'ایجاد کامنت '],
+            ['name' => 'update-comment', 'title' => 'update-comment', 'lable' => 'ویرایش کامنت '],
+            ['name' => 'delete-comment', 'title' => 'delete-comment', 'lable' => 'حذف کامنت '],
+
+            // user permission
+            ['name' => 'read-user', 'title' => 'read-user', 'lable' => 'مشاهده کاربر '],
+            ['name' => 'create-user', 'title' => 'create-user', 'lable' => 'ایجاد کاربر '],
+            ['name' => 'update-user', 'title' => 'update-user', 'lable' => 'ویرایش کاربر '],
+            ['name' => 'delete-user', 'title' => 'delete-user', 'lable' => 'حذف کاربر '],
+
+            // slider permission
+            ['name' => 'read-slider', 'title' => 'read-slider', 'lable' => 'مشاهده اسلایدر '],
+            ['name' => 'create-slider', 'title' => 'create-slider', 'lable' => 'ایجاد اسلایدر '],
+            ['name' => 'update-slider', 'title' => 'update-slider', 'lable' => 'ویرایش اسلایدر '],
+            ['name' => 'delete-slider', 'title' => 'delete-slider', 'lable' => 'حذف اسلایدر '],
+
+            // featuredCategory permission
+            ['name' => 'read-featuredCategory', 'title' => 'read-featuredCategory', 'lable' => 'مشاهده دسته بندی ویژه '],
+            ['name' => 'create-featuredCategory', 'title' => 'create-featuredCategory', 'lable' => 'ایجاد دسته بندی ویژه '],
+            ['name' => 'update-featuredCategory', 'title' => 'update-featuredCategory', 'lable' => 'ویرایش دسته بندی ویژه '],
+            ['name' => 'delete-featuredCategory', 'title' => 'delete-featuredCategory', 'lable' => 'حذف دسته بندی ویژه '],
+
+             // propert permission
+             ['name' => 'read-property', 'title' => 'read-slider', 'lable' => 'مشاهده مشخصات '],
+             ['name' => 'create-property', 'title' => 'create-slider', 'lable' => 'ایجاد مشخصات '],
+             ['name' => 'update-property', 'title' => 'update-slider', 'lable' => 'ویرایش مشخصات '],
+             ['name' => 'delete-property', 'title' => 'delete-slider', 'lable' => 'حذف مشخصات '],
+
+              // propertyGroup permission
+            ['name' => 'read-propertyGroup', 'title' => 'read-propertyGroup', 'lable' => 'مشاهده گروه مشخصات '],
+            ['name' => 'create-propertyGroup', 'title' => 'create-propertyGroup', 'lable' => 'ایجاد گروه مشخصات '],
+            ['name' => 'update-propertyGroup', 'title' => 'update-propertyGroup', 'lable' => 'ویرایش گروه مشخصات '],
+            ['name' => 'delete-propertyGroup', 'title' => 'delete-propertyGroup', 'lable' => 'حذف گروه مشخصات '],
 
             // برای ورد به داشبورد هست مه فقط ادمین بتونه وارد شه
             ['name' => 'view-dashboard', 'title' => 'view-dashboard', 'lable' => 'مشاهده داشبورد'],
