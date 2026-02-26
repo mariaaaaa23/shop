@@ -10,9 +10,22 @@ use Carbon\Traits\Cast;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class CategoryController extends Controller
 {
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-category', only: ['index']),
+            new Middleware('permission:create-category', only: ['create', 'store']),
+            new Middleware('permission:edit-category', only: ['edit', 'update']),
+            new Middleware('permission:delete-category', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

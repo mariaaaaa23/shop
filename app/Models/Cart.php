@@ -2,176 +2,91 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\CartModel;
 
 class Cart 
 {
-    // افزودن محصول به سبد خرید
     public static function new(Product $product, Request $request)
     {
-
-        // از درخواست مقدارquantity تعداد رو میگیره
-        $quantity = (int) $request->get('quantity', 1);
-
-        // اگه کاربر لاگین است در دیتابیس ذخیره کنه
-        // یعنی کاربرانی که وارد شدن میتونن محصول رو در دیتابیس ذخیره کنن
-        if(Auth::check()){
-            // دنبال رکوردی میگرده که همان محصول و خمان کاربر قبلا در سبد خرید وجود داشته باشه
-            $carItem = CartModel::where('user_id', Auth::id())
-            ->where('product_id', $product->id)->first();
-
-            // اگه قبلا این محصول رو داشته تو سبد خریدش فقط تعدادش اپدیت میشه
-            if($carItem){
-                // فقط تعدادش رو افزایش میده
-                $carItem->increment('quantity', $quantity);
-                // اگه محصول قبلا تو سبد خرید نبود
-            }else{
-                // یک رکورد جدید تو جدول کارتس ایجاد میکنه
-                CartModel::create([
-                    // مشخص میکنه این محصول برای چه کاربریه و تعدادش چقدره
-                    'user_id' => Auth::id(),
-                    'product_id' => $product->id,
-                    'quantity' => $quantity
-                ]);
-
-            }
-
-            // بعد از انجام همه کارها متد تموم میشه و چیزی بر نمیگردونه
-            return;
-
-        }
-
-
-        // کاربر لاگین نیست در سشن ذخیره میکنه
-        // سب.د خرید فعلی کاربر از سشن میگیریم اگه هنوز سبد خرید وجود نداشت ارایه خالی میسازه
+        // ۱. گرفتن سبد فعلی یا ایجاد آرایه خالی
+        // کل سبدخرید فعلی رو از حفاظه میگیره اگه سبدی نباشه یم لیست خالی ایجاد میگنه
         $cart = session()->get('cart', []);
 
-        // یعنی اگه یه محصول چند بار اضاف چای قبلیش رو آپدیت میکنه در واقع کلید محصول ایدی محصول هست
-        $cart[$product->id] = [
-            // اطلاعات محصول از دیتابیس
-            'product'  => $product,
-            // تعداد محصول
-            'quantity' => (int) $request->get('quantity', 1),
-        ];
+        // ۲. گرفتن تعداد درخواستی
+        // تعداد درخواستی کاربر رو از ورودی میگیره یعنی تعداد محصول اگه تعدادی نداشته باشه پیش فرض یک میده
+        $quantity = (int) $request->get('quantity', 1);
 
-        
-        // بروزرسانی مجموع مبلغ و تعداد کل
-    // (در صورت نیاز می‌توان اینها را جداگانه در session نگه داشت)
-    //    $cart['total_amount'] = self::totalAmount();
-    //    $cart['total_items'] = self::totalItems();
+        // چک میکنه ایا این محصول از قبل در سبدخرید است
+        if (isset($cart[$product->id])) {
+            // اگه هست فقط تعداد قبلی رو رو با تعداد جدید جمع میکنه
+            $cart[$product->id]['quantity'] += $quantity;
+        } else {
+            // اگه نیست یک ردیف جدید شامل اطلاعات و تعداد محصول براش میسازه
+            $cart[$product->id] = [
+                'product'  => $product,
+                'quantity' => $quantity,
+            ];
+        }
 
-
-
-        // سب.د خرید نهایی رو از سشن ذخیره میکنیم و با رفرش صفحه باقی میمونه
+        // ثبت اپدیت شده رو دوباره تو سشن میزاره
         session()->put('cart', $cart);
+        session()->save(); // اجبار به ذخیره برای اطمینان در درخواست‌های AJAX
     }
 
-    
-    // کل کارت رو میگیریم یعنی کل آیتم های سبد خرید
-    public static function getCart(): array
-    {
-        // اگه کارت وجود داشت برمیگردونه اگه نبود آرایه خالی
+     // گرفتن همه ایتم های سبد خرید
+      // کل کارت رو میگیریم یعنی کل آیتم های سبد خرید
+    public static function getCart() {
+          // کل سبدخرید فعلی رو از حفاظه میگیره اگه سبدی نباشه یم لیست خالی ایجاد میگنه
         return session()->get('cart', []);
     }
 
-    // مجموع مبلغ سبد خرید
-    public static function totalAmount(): int
-    {  
-        // این متغییر برای جمع مبلغ کل محصولات تو سبد خرید
-          $total = 0; 
-
-        //   حلقه میزنه روی همه ایتم های سبد خرید
-        // self::getItems() متدی که همه محصولات و تعدادشون تو سبد خرید رو برمیگردونه
-        foreach (self::getItems() as $item) { 
-            // از هر ایتم محصولش رو جدا میکنه
-              $product = $item['product'];  
-            //   و تعدادش رو میگیره اگه تعدادش تعریف نشده باشه صفر فرض میکنه
-             $quantity = $item['quantity'] ?? 0;
-
-            //  اگه محصوا وجود داشته باشه
-             if ($product) {
-                // قیمت هر محصول رو در تعداد ضرب میکنه
-                // اگه قیمت تعریف نشده باشه صفر فرض میکنه
-                   $total += ($product->cost ?? 0) * $quantity; 
-            }
-        }   
-         return $total;
-    }
-
-    // مجموع تعداد محصولات (بر اساس quantity)
-    public static function totalItems(): int
-    {
-         $total = 0;
-
-         //   حلقه میزنه روی همه ایتم های سبد خرید
-        // self::getItems() متدی که همه محصولات و تعدادشون تو سبد خرید رو برمیگردونه
-         foreach (self::getItems() as $item) {
-            // از هر ایتم  و تعدادش رو میگیره اگه تعدادش تعریف نشده باشه صفر فرض میکنه
-                 $quantity = $item['quantity'] ?? 0;
-                //  اگه 2تا از محصولی در سبد خرید باشه 2تای دیگه از همون محصول به سبد خرید اضاف کنیم میشه 4تا محصول
-                 $total += $quantity;
-         } 
-           return $total;
-        }
     // برای گرفتن خود محصول داخل سبد خرید
     public static function getItems()
     {
-        // بررسی میکنه کاربر لاگین کرده یانه اگه لاگین کرده باشه اطلاعات سبد از دیتابیس گرفته میشه
-        if (Auth::check()) {
-            // همه رکورد های سبد خرید کاربر لاگین کرده رو میگیره
-            $items = CartModel::with('product')
-            // مطمعن میشه که اطلاعات محصول هم بارگذاری بشه
-            ->where('user_id', Auth::id())->get();
+        // فیلتر کردن ارایه برای جدا کردن محصولات واقعی
+        return array_filter(self::getCart(), function($item) {
+            // شرط نگه داشتن ایتم  ایتم حتما یک ارایه باشد و داخل ان ارایه کلیدی به نام پروداکت وجود داشه باشه
+            return is_array($item) && isset($item['product']);
+        });
+    }
 
-            // یه ارایه خالی میسازه تا ایتم هارو داخلش بریزه
-            $cart = [];  
+    public static function totalAmount(): int {
+        $total = 0;
+        // روی تک تک محصولات سبدخرید حلقه میزنه
+        foreach (self::getItems() as $item) {
+            //قیمت محصول رو پیدا میکنه
+            $cost = $item['product']->cost ?? $item['product']->cost ?? 0;
+            // قیمت رو به در تعداد ضرب میکنه و به جمع کل اضافه میکنه
+            $total += $cost * $item['quantity'];
+        }
+        return $total;
+    }
 
-            // روی هر رکورد سبد حلقه میزنه
-         foreach ($items as $item) {
-            // اگه محصول وجود داشته باشه
-            if ($item->product) { 
-                //  محصول و تعدادش رو داخل ارایه کارت ذخیره میکنه          
-              $cart[$item->product_id] = [
-                  'product' => $item->product,
-                  'quantity' => $item->quantity
-               ];           
-            }    
-      } 
-              //   در نهایت سبدخرید کاربر وارد شده رو برمیگردونه
-              return $cart; 
-              }
-        // مهمان   
-         return session()->get('cart', []);
-        } 
+    // تعداد کل کالا
+    public static function totalItems(): int {
+        $total = 0;
+        // روی تک تک محصولات سبدخرید حلقه میزنه
+        foreach (self::getItems() as $item) {
+            // بررسی میکنه که چندتا کالا توی سبد خریدمون هست اگه دوتا لباس و یکی شلوارد باشه میشه3 تا کالا
+            $total += $item['quantity'];
+        }
+        return $total;
+    }
 
-
-    // حذف محصول از سبد خرید
     public static function remove(Product $product)
     {
-        // بررسی میکنه ایا کاربر لاگین کرده یانه
-        if (Auth::check()) {
-            // اگه کاربر وارد شده باشه رکورد مربوط به این محصول و کاربر رو از دیتابیس حذف میکنه
-            CartModel::where('user_id', Auth::id())
-                ->where('product_id', $product->id)
-                ->delete();
-            return;
-        }
-        //  حذف از session برای مهمان
-        $cart = session()->get('cart', []);
-
-        // بررسی میکنه ایا محصول مورد نظر تو سبد خرید هست
+        // سبد رو از سشن میگیره
+        $cart = self::getCart();
+        // چک میکنه محصول توی سبد هست یانه
         if (isset($cart[$product->id])) {
-            // اگه هست حذفش میکنه
+            // اگه بودحذف میکنه براساس ایدی محصول
             unset($cart[$product->id]);
         }
+        // لیست جدید بدون اون محصول رو دوباره تو سشن ذخیره میکنه
         session()->put('cart', $cart);
     }
 
-//   حذف همه ایتم ها 
-   public static function removeAll()
+    public static function removeAll()
    {
      session()->forget('cart');
    }

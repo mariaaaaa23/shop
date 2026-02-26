@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderRequest;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
@@ -9,6 +10,7 @@ use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
 use App\Mail\PaymentSuccessMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -24,16 +26,29 @@ class OrderController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(OrderRequest $request)
     {
         
         // یک سفارش جدید در جدول اوردرس ایجاد میکنه
-       $order = Order::query()->create([
+       $Data = [
         // جمع کل قیمت محصولات در سبد خرید و نشون میده
             'amount' => Cart::totalAmount(),
             // ادرس رو میگیره
             'address' => $request->get('address'),
-        ]);
+        ];
+
+        // بررسی میکنه کاربر لاگین شده یا نه
+        if(Auth::check()){
+            $Data['user_id']=Auth::id();
+            $Data['session_id']=null;
+        }else{
+            // اگه کاربر لاگین نبود ایدی سشن فعلی رو ذخیره میکنه
+            $Data['user_id']=null;
+            $Data['session_id']=session()->getId();
+        }
+
+        // ایجاد سفارش با فیلد های جدید
+        $order=Order::query()->create($Data);
 
 
         // این حلقه روی همه ایتم های موجود در سبد خرید میچرخه
@@ -57,6 +72,7 @@ class OrderController extends Controller
             ]);
         }
         
+        
 
         // درگاه پرداخت
         // ایجاد صورت حساب
@@ -74,9 +90,7 @@ class OrderController extends Controller
         })->pay()->render();
 
 
-        // بعد از اینکه کاربر برای ثبت سفارش دکمه ثبت رو زد باید سبدخریدمون خالی بشه که سفارشای قبلی دیگه ثبت نشه
-        // پاک کردن همه ایتم ها
-        Cart::removeAll();
+        
 
 
         return redirect()->back();
@@ -102,11 +116,18 @@ class OrderController extends Controller
 
 
     //    اگه پرداخت موفق بود ایمیل میاد پرداخت با موفقیت انجام شد
-    if($request->get('Status') === 'ok'){
-        $user = $order->user;
+    if($request->get('Status') === 'OK'){
 
+        // بعد از اینکه کاربر برای ثبت سفارش دکمه ثبت رو زد باید سبدخریدمون خالی بشه که سفارشای قبلی دیگه ثبت نشه
+        // پاک کردن همه ایتم ها
+        Cart::removeAll();
+
+        // ارسال ایمیل فقط در صورتی که کاربر لاگین باشد
+        if($order->user){
+            $user=$order->user;
         Mail::to($user->email)->send(new PaymentSuccessMail($user, $order));
     }
+}
 
 
 

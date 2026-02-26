@@ -658,7 +658,7 @@
       data: {
        _token: "{{ csrf_token() }}",
       //  تعداد سفارش
-      quantity: quantity
+      quantity: quantity,
 
       },
       success: function(data){

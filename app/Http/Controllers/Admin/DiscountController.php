@@ -7,9 +7,22 @@ use App\Http\Requests\DiscountRequest;
 use App\Models\Discount;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class DiscountController extends Controller
 {
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-discount', only: ['index']),
+            new Middleware('permission:create-discount', only: ['create', 'store']),
+            new Middleware('permission:edit-discount', only: ['edit', 'update']),
+            new Middleware('permission:delete-discount', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

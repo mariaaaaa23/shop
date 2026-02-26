@@ -57,6 +57,8 @@ class User extends Authenticatable
         ];
 
     }
+    
+
 
     // static → بدون ساختن شیء از User صدا زده می‌شود:
     // Request $request → ایمیل کاربر از ریکوئست خوانده می‌شود

@@ -7,9 +7,22 @@ use App\Http\Requests\SliderRequest;
 use App\Models\Slider;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class SliderController extends Controller
 {
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-slider', only: ['index']),
+            new Middleware('permission:create-slider', only: ['create', 'store']),
+            new Middleware('permission:edit-slider', only: ['edit', 'update']),
+            new Middleware('permission:delete-slider', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

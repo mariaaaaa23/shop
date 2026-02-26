@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CartRequest;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
 
+
 class CartController extends Controller
 {
+    
 
     public function index()
     {
@@ -23,11 +26,8 @@ class CartController extends Controller
         ]);
     }
 
-    public function store(Request $request, Product $product)
+    public function store(CartRequest $request, Product $product)
     {
-       
-
-
 
         // برو داخل کلاس کارت و بگو این محصول با این تعداد رو به سبد خرید اضافه کن
         Cart::new($product, $request);

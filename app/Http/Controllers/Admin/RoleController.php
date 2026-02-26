@@ -8,9 +8,23 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class RoleController extends Controller
 {
+
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-role', only: ['index']),
+            new Middleware('permission:create-role', only: ['create', 'store']),
+            new Middleware('permission:edit-role', only: ['edit', 'update']),
+            new Middleware('permission:delete-role', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -118,6 +132,17 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        // جلوگیری از حذف رول ادیمین
+        if($role->name == 'admin'){
+            return back()->with('errors','admin role connot be deleted!');
+        }
+
+        // بررسی میکنه اگه کاربری این رول رو داشته باشه اجازه حذف نمیده و خطا میده
+        if($role->users()->count()>0){
+            return back()->with('error','cannot delete role assigned to users!');
+        }
+
+
         // حذف دسترسی ها
         $role->permissions()->detach();
 

@@ -5,9 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class UserController extends Controller
 {
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-user', only: ['index']),
+            new Middleware('permission:create-user', only: ['create', 'store']),
+            new Middleware('permission:delete-user', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

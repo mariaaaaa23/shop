@@ -7,9 +7,22 @@ use App\Http\Requests\PropertyRequest;
 use App\Models\Property;
 use App\Models\PropertyGroup;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class PropertyController extends Controller
 {
+    public static function middleware(): array
+    {
+        return [
+            // اعمال پرمیشن‌ها به متدهای خاص
+            new Middleware('permission:read-Property', only: ['index']),
+            new Middleware('permission:create-Property', only: ['create', 'store']),
+            new Middleware('permission:edit-Property', only: ['edit', 'update']),
+            new Middleware('permission:delete-Property', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
