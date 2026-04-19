@@ -28,51 +28,43 @@ class OrderController extends Controller
 
     public function store(OrderRequest $request)
     {
-        
-        // یک سفارش جدید در جدول اوردرس ایجاد میکنه
-       $Data = [
-        // جمع کل قیمت محصولات در سبد خرید و نشون میده
-            'amount' => Cart::totalAmount(),
-            // ادرس رو میگیره
-            'address' => $request->get('address'),
-        ];
-
-        // بررسی میکنه کاربر لاگین شده یا نه
-        if(Auth::check()){
-            $Data['user_id']=Auth::id();
-            $Data['session_id']=null;
-        }else{
-            // اگه کاربر لاگین نبود ایدی سشن فعلی رو ذخیره میکنه
-            $Data['user_id']=null;
-            $Data['session_id']=session()->getId();
-        }
-
-        // ایجاد سفارش با فیلد های جدید
-        $order=Order::query()->create($Data);
-
-
-        // این حلقه روی همه ایتم های موجود در سبد خرید میچرخه
-        // ارایه ای از محصولات و تعداد اونارو برمیگردونه
-        foreach(Cart::getItems() as $item){
-
-            // از هر آیتم محصول واقعی و تعداد خریداری شده استخراج میشه
-            $product = $item['product'];
-            $productQty = $item['quantity'];
-
-
-            // برای هر محصول یم جزئیات سفارش ساخته میشه
-            $order->details()->create([
-                'product_id' => $product->id,
-                // قیمت واحد محصول با حساب تخفیف
-                'unit_amount' => $product->cost_whith_discount,
-                // تعداد محصول خریداری شده
-                'count' => $productQty,
-                // مجموع قیمت محصول
-                'total_amount' => $productQty * $product->cost_whith_discount
+//        یک سفارش جدید برای این کاربر بساز
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'payment_status' => 'unknown',
             ]);
-        }
-        
-        
+
+//        روی همه محصولای داخل سبد خرید حلقه میزنه
+            foreach (Cart::getItems() as $item) {
+//                محصول واقعی رو از دیتابیس پیدا کن
+                $product = Product::find($item['product_id']);
+
+//                اگه این محصول وجود نداشت ردش کن برو بعدی
+                if (!$product) continue;
+
+//                ببین این محصول قبلا داخل همین سفارش هست
+                $exist = $order->details()
+                    ->where('product_id', $item['product_id'])
+                    ->first();
+
+//                اگه این این محصول قبلا داخل سفارش بوده
+                if ($exist) {
+//                    تعدادش رو زیاد کن
+                    $exist->increment('count', $item['quantity']);
+//                    وگرنه
+                } else {
+//                    این نحصول رو به سفارش اضاف کن
+                    $order->details()->create([
+                        'product_id' => $product->id,
+                        'unit_amount' => $product->cost_whith_discount,
+                        'count' => $item['quantity'],
+                        'total_amount' => $item['quantity'] * $product->cost_whith_discount
+                    ]);
+                }
+            }
+//            سبد رو خالی کن چون همه چیز تبدیل به سفارش شد         
+            Cart::clear();
+
 
         // درگاه پرداخت
         // ایجاد صورت حساب
@@ -90,7 +82,7 @@ class OrderController extends Controller
         })->pay()->render();
 
 
-        
+
 
 
         return redirect()->back();
@@ -102,7 +94,9 @@ class OrderController extends Controller
     {
         // سفارشی رو پیدا کن که کد تراکنشش همونی باشه که در گاه الان برگردونده
         // Authority یه کد یکتایی که درگاه وقتی کاربر میره صفحه پرداخت به سایتمون میده
-       $order = Order::query()->where('transaction_id', $request->get('Authority'))->first();
+       $order = Order::query()->where('transaction_id',
+           $request->get('Authority'))
+           ->first();
 
 
        if(!$order){
@@ -110,13 +104,14 @@ class OrderController extends Controller
        }
 
 
-       $order->update([
-        'payment_status' => $request->get('Status'),
-       ]);
+
 
 
     //    اگه پرداخت موفق بود ایمیل میاد پرداخت با موفقیت انجام شد
     if($request->get('Status') === 'OK'){
+        $order->update([
+            'payment_status' => $request->get('Status'),
+        ]);
 
         // بعد از اینکه کاربر برای ثبت سفارش دکمه ثبت رو زد باید سبدخریدمون خالی بشه که سفارشای قبلی دیگه ثبت نشه
         // پاک کردن همه ایتم ها

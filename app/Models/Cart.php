@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Http\Request;
 
-class Cart 
+class Cart
 {
     public static function new(Product $product, Request $request)
     {
@@ -23,7 +23,7 @@ class Cart
         } else {
             // اگه نیست یک ردیف جدید شامل اطلاعات و تعداد محصول براش میسازه
             $cart[$product->id] = [
-                'product'  => $product,
+                'product_id'  => $product->id,
                 'quantity' => $quantity,
             ];
         }
@@ -43,11 +43,17 @@ class Cart
     // برای گرفتن خود محصول داخل سبد خرید
     public static function getItems()
     {
-        // فیلتر کردن ارایه برای جدا کردن محصولات واقعی
-        return array_filter(self::getCart(), function($item) {
-            // شرط نگه داشتن ایتم  ایتم حتما یک ارایه باشد و داخل ان ارایه کلیدی به نام پروداکت وجود داشه باشه
-            return is_array($item) && isset($item['product']);
-        });
+        $items = [];
+        foreach (self::getCart() as $item) {
+            $product = Product::find($item['product_id']);
+            if ($product) {
+                $items[] = [
+                    'product' => $product,
+                    'quantity' => $item['quantity']
+                ];
+            }
+        }
+        return $items;
     }
 
     public static function totalAmount(): int {
@@ -90,5 +96,5 @@ class Cart
    {
      session()->forget('cart');
    }
-  
+
 }
