@@ -62,7 +62,7 @@ class OrderController extends Controller
                     ]);
                 }
             }
-//            سبد رو خالی کن چون همه چیز تبدیل به سفارش شد         
+//            سبد رو خالی کن چون همه چیز تبدیل به سفارش شد
             Cart::clear();
 
 
