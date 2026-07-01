@@ -56,7 +56,7 @@ class SliderController extends Controller
             'links'=>$request->get('links'),
             'image'=>$path
         ]);
-        
+
 
 
         return redirect(route('sliders.index'));
@@ -92,19 +92,18 @@ class SliderController extends Controller
         $path = $slider->image;
 
         // چک میکنه آیا فایلی آپلود شده یا خیر
-        // چک میکنه آیا فایلی آپلود شده یا خیر
         if ($request->hasFile('image')) {
             $path = $request->file('image')
                 ->storeAs('sliders', $request->file('image')->getClientOriginalName(), 'public');
          }
 
-        
+
         // اپدیت کردن برند
         $slider->update([
             'links'=>$request->get('links'),
             'image'=>$path
         ]);
-        
+
 
         return redirect(route('sliders.index'));
     }
